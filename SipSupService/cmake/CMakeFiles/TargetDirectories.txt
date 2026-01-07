@@ -1,0 +1,3 @@
+/home/GB28181-Server/SipSupService/cmake/CMakeFiles/SipSupService.dir
+/home/GB28181-Server/SipSupService/cmake/CMakeFiles/edit_cache.dir
+/home/GB28181-Server/SipSupService/cmake/CMakeFiles/rebuild_cache.dir
