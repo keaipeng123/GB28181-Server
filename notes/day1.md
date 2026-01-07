@@ -2,11 +2,13 @@
 
 ## 1. 今日学习内容
 - Markdown
-    - 语法库整理： [markdown-语法库.md](./markdown-语法库.md)
+    - 语法库整理： [markdown-语法库.md](./markdown语法库.md)
 - CMake / Make
     - 基本编译流程（configure + build）
     - CMake 生成文件的作用
     - 重新编译（增量/重新配置/彻底重建）
+- 第三方库
+    - 第三方库文档整理：[第三方库安装.md](./第三方库安装.md)
 
 ## 2. make 编译开发流程
 

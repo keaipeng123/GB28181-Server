@@ -4,7 +4,7 @@
 # compile CXX with /usr/bin/c++
 CXX_DEFINES = 
 
-CXX_INCLUDES = -I/home/GB28181-Server/SipSupService/cmake/../include
+CXX_INCLUDES = -I/home/GB28181-Server/SipSupService/cmake/../include -I/home/GB28181-Server/SipSupService/cmake/../../3rd/include
 
 CXX_FLAGS =  -Wall -std=gnu++0x   -g
 

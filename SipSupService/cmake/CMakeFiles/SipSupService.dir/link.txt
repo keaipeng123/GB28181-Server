@@ -1,1 +1,1 @@
-/usr/bin/c++  -Wall -std=gnu++0x -rdynamic CMakeFiles/SipSupService.dir/home/GB28181-Server/SipSupService/src/main.o -o SipSupService 
+/usr/bin/c++  -Wall -std=gnu++0x -rdynamic CMakeFiles/SipSupService.dir/home/GB28181-Server/SipSupService/src/main.o -o SipSupService   -L../../3rd/lib  -Wl,-rpath,../../3rd/lib -Wl,-Bstatic -lglog -Wl,-Bdynamic -lpthread -Wl,-Bstatic -lgflags -Wl,-Bdynamic 

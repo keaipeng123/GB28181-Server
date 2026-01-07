@@ -10,5 +10,13 @@ ADD_DEFINITIONS(-g)
 AUX_SOURCE_DIRECTORY(../src SRC)
 #添加头文件路径
 INCLUDE_DIRECTORIES(../include)
+INCLUDE_DIRECTORIES(../../3rd/include)
+#添加需要链接的库文件路径
+LINK_DIRECTORIES(../../3rd/lib)
 #将指定的源文件代码生成相应的可执行文件
 ADD_EXECUTABLE(${EXE_NAME} ${SRC})
+
+#将生成的目标文件与指定的库文件链接
+TARGET_LINK_LIBRARIES(${EXE_NAME} libglog.a)
+#链接gflags库需要添加pthread库支持
+TARGET_LINK_LIBRARIES(${EXE_NAME} -lpthread libgflags.a)
