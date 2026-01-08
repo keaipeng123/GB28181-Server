@@ -11,6 +11,13 @@ AUX_SOURCE_DIRECTORY(../src SRC)
 #添加头文件路径
 INCLUDE_DIRECTORIES(../include)
 INCLUDE_DIRECTORIES(../../3rd/include)
+INCLUDE_DIRECTORIES(../../3rd/include/pjsip)
+INCLUDE_DIRECTORIES(../../3rd/include/pjsip)
+INCLUDE_DIRECTORIES(../../3rd/include/jrtplib3)
+INCLUDE_DIRECTORIES(../../3rd/include/jthread)
+INCLUDE_DIRECTORIES(../../3rd/include/tinyxml2)
+#INCLUDE_DIRECTORIES(../../3rd/include/json)
+INCLUDE_DIRECTORIES(../../3rd/include/libevent)
 #添加需要链接的库文件路径
 LINK_DIRECTORIES(../../3rd/lib)
 #将指定的源文件代码生成相应的可执行文件
@@ -20,3 +27,9 @@ ADD_EXECUTABLE(${EXE_NAME} ${SRC})
 TARGET_LINK_LIBRARIES(${EXE_NAME} libglog.a)
 #链接gflags库需要添加pthread库支持
 TARGET_LINK_LIBRARIES(${EXE_NAME} -lpthread libgflags.a)
+
+TARGET_LINK_LIBRARIES(${EXE_NAME} -lpjsua2-x86_64-unknown-linux-gnu -lpjsua-x86_64-unknown-linux-gnu -lpjsip-ua-x86_64-unknown-linux-gnu -lpjsip-simple-x86_64-unknown-linux-gnu -lpjsip-x86_64-unknown-linux-gnu -lpjmedia-codec-x86_64-unknown-linux-gnu -lpjmedia-videodev-x86_64-unknown-linux-gnu -lpjmedia-audiodev-x86_64-unknown-linux-gnu -lpjmedia-x86_64-unknown-linux-gnu -lpjnath-x86_64-unknown-linux-gnu -lpjlib-util-x86_64-unknown-linux-gnu -lsrtp-x86_64-unknown-linux-gnu -lresample-x86_64-unknown-linux-gnu -lgsmcodec-x86_64-unknown-linux-gnu -lspeex-x86_64-unknown-linux-gnu -lilbccodec-x86_64-unknown-linux-gnu -lg7221codec-x86_64-unknown-linux-gnu -lyuv-x86_64-unknown-linux-gnu -lwebrtc-x86_64-unknown-linux-gnu -lpj-x86_64-unknown-linux-gnu -lpjsdp-x86_64-unknown-linux-gnu -lasound)
+TARGET_LINK_LIBRARIES(${EXE_NAME} libjrtp.a libjthread.a)
+TARGET_LINK_LIBRARIES(${EXE_NAME} libtinyxml2.a)
+TARGET_LINK_LIBRARIES(${EXE_NAME} libjsoncpp.a)
+TARGET_LINK_LIBRARIES(${EXE_NAME} libevent.a libevent_pthreads.a)

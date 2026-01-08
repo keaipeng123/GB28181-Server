@@ -4,7 +4,7 @@
 # compile CXX with /usr/bin/c++
 CXX_DEFINES = 
 
-CXX_INCLUDES = -I/home/GB28181-Server/SipSupService/cmake/../include -I/home/GB28181-Server/SipSupService/cmake/../../3rd/include
+CXX_INCLUDES = -I/home/GB28181-Server/SipSupService/cmake/../include -I/home/GB28181-Server/SipSupService/cmake/../../3rd/include -I/home/GB28181-Server/SipSupService/cmake/../../3rd/include/pjsip -I/home/GB28181-Server/SipSupService/cmake/../../3rd/include/jrtplib3 -I/home/GB28181-Server/SipSupService/cmake/../../3rd/include/jthread -I/home/GB28181-Server/SipSupService/cmake/../../3rd/include/tinyxml2 -I/home/GB28181-Server/SipSupService/cmake/../../3rd/include/libevent
 
 CXX_FLAGS =  -Wall -std=gnu++0x   -g
 
