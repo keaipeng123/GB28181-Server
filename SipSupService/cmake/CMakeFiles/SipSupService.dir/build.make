@@ -69,10 +69,38 @@ include CMakeFiles/SipSupService.dir/progress.make
 # Include the compile flags for this target's objects.
 include CMakeFiles/SipSupService.dir/flags.make
 
+CMakeFiles/SipSupService.dir/home/GB28181-Server/SipSupService/src/ConfReader.o: CMakeFiles/SipSupService.dir/flags.make
+CMakeFiles/SipSupService.dir/home/GB28181-Server/SipSupService/src/ConfReader.o: /home/GB28181-Server/SipSupService/src/ConfReader.cpp
+CMakeFiles/SipSupService.dir/home/GB28181-Server/SipSupService/src/ConfReader.o: CMakeFiles/SipSupService.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/GB28181-Server/SipSupService/cmake/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object CMakeFiles/SipSupService.dir/home/GB28181-Server/SipSupService/src/ConfReader.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/SipSupService.dir/home/GB28181-Server/SipSupService/src/ConfReader.o -MF CMakeFiles/SipSupService.dir/home/GB28181-Server/SipSupService/src/ConfReader.o.d -o CMakeFiles/SipSupService.dir/home/GB28181-Server/SipSupService/src/ConfReader.o -c /home/GB28181-Server/SipSupService/src/ConfReader.cpp
+
+CMakeFiles/SipSupService.dir/home/GB28181-Server/SipSupService/src/ConfReader.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/SipSupService.dir/home/GB28181-Server/SipSupService/src/ConfReader.i"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/GB28181-Server/SipSupService/src/ConfReader.cpp > CMakeFiles/SipSupService.dir/home/GB28181-Server/SipSupService/src/ConfReader.i
+
+CMakeFiles/SipSupService.dir/home/GB28181-Server/SipSupService/src/ConfReader.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/SipSupService.dir/home/GB28181-Server/SipSupService/src/ConfReader.s"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/GB28181-Server/SipSupService/src/ConfReader.cpp -o CMakeFiles/SipSupService.dir/home/GB28181-Server/SipSupService/src/ConfReader.s
+
+CMakeFiles/SipSupService.dir/home/GB28181-Server/SipSupService/src/SipLocalConfig.o: CMakeFiles/SipSupService.dir/flags.make
+CMakeFiles/SipSupService.dir/home/GB28181-Server/SipSupService/src/SipLocalConfig.o: /home/GB28181-Server/SipSupService/src/SipLocalConfig.cpp
+CMakeFiles/SipSupService.dir/home/GB28181-Server/SipSupService/src/SipLocalConfig.o: CMakeFiles/SipSupService.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/GB28181-Server/SipSupService/cmake/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building CXX object CMakeFiles/SipSupService.dir/home/GB28181-Server/SipSupService/src/SipLocalConfig.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/SipSupService.dir/home/GB28181-Server/SipSupService/src/SipLocalConfig.o -MF CMakeFiles/SipSupService.dir/home/GB28181-Server/SipSupService/src/SipLocalConfig.o.d -o CMakeFiles/SipSupService.dir/home/GB28181-Server/SipSupService/src/SipLocalConfig.o -c /home/GB28181-Server/SipSupService/src/SipLocalConfig.cpp
+
+CMakeFiles/SipSupService.dir/home/GB28181-Server/SipSupService/src/SipLocalConfig.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/SipSupService.dir/home/GB28181-Server/SipSupService/src/SipLocalConfig.i"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/GB28181-Server/SipSupService/src/SipLocalConfig.cpp > CMakeFiles/SipSupService.dir/home/GB28181-Server/SipSupService/src/SipLocalConfig.i
+
+CMakeFiles/SipSupService.dir/home/GB28181-Server/SipSupService/src/SipLocalConfig.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/SipSupService.dir/home/GB28181-Server/SipSupService/src/SipLocalConfig.s"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/GB28181-Server/SipSupService/src/SipLocalConfig.cpp -o CMakeFiles/SipSupService.dir/home/GB28181-Server/SipSupService/src/SipLocalConfig.s
+
 CMakeFiles/SipSupService.dir/home/GB28181-Server/SipSupService/src/main.o: CMakeFiles/SipSupService.dir/flags.make
 CMakeFiles/SipSupService.dir/home/GB28181-Server/SipSupService/src/main.o: /home/GB28181-Server/SipSupService/src/main.cpp
 CMakeFiles/SipSupService.dir/home/GB28181-Server/SipSupService/src/main.o: CMakeFiles/SipSupService.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/GB28181-Server/SipSupService/cmake/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object CMakeFiles/SipSupService.dir/home/GB28181-Server/SipSupService/src/main.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/GB28181-Server/SipSupService/cmake/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Building CXX object CMakeFiles/SipSupService.dir/home/GB28181-Server/SipSupService/src/main.o"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/SipSupService.dir/home/GB28181-Server/SipSupService/src/main.o -MF CMakeFiles/SipSupService.dir/home/GB28181-Server/SipSupService/src/main.o.d -o CMakeFiles/SipSupService.dir/home/GB28181-Server/SipSupService/src/main.o -c /home/GB28181-Server/SipSupService/src/main.cpp
 
 CMakeFiles/SipSupService.dir/home/GB28181-Server/SipSupService/src/main.i: cmake_force
@@ -85,15 +113,19 @@ CMakeFiles/SipSupService.dir/home/GB28181-Server/SipSupService/src/main.s: cmake
 
 # Object files for target SipSupService
 SipSupService_OBJECTS = \
+"CMakeFiles/SipSupService.dir/home/GB28181-Server/SipSupService/src/ConfReader.o" \
+"CMakeFiles/SipSupService.dir/home/GB28181-Server/SipSupService/src/SipLocalConfig.o" \
 "CMakeFiles/SipSupService.dir/home/GB28181-Server/SipSupService/src/main.o"
 
 # External object files for target SipSupService
 SipSupService_EXTERNAL_OBJECTS =
 
+SipSupService: CMakeFiles/SipSupService.dir/home/GB28181-Server/SipSupService/src/ConfReader.o
+SipSupService: CMakeFiles/SipSupService.dir/home/GB28181-Server/SipSupService/src/SipLocalConfig.o
 SipSupService: CMakeFiles/SipSupService.dir/home/GB28181-Server/SipSupService/src/main.o
 SipSupService: CMakeFiles/SipSupService.dir/build.make
 SipSupService: CMakeFiles/SipSupService.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/GB28181-Server/SipSupService/cmake/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Linking CXX executable SipSupService"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/GB28181-Server/SipSupService/cmake/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Linking CXX executable SipSupService"
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/SipSupService.dir/link.txt --verbose=$(VERBOSE)
 
 # Rule to build all files generated by this target.

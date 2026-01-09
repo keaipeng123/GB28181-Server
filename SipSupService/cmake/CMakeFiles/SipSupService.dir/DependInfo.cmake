@@ -8,6 +8,8 @@ set(CMAKE_DEPENDS_LANGUAGES
 
 # The set of dependency files which are needed:
 set(CMAKE_DEPENDS_DEPENDENCY_FILES
+  "/home/GB28181-Server/SipSupService/src/ConfReader.cpp" "CMakeFiles/SipSupService.dir/home/GB28181-Server/SipSupService/src/ConfReader.o" "gcc" "CMakeFiles/SipSupService.dir/home/GB28181-Server/SipSupService/src/ConfReader.o.d"
+  "/home/GB28181-Server/SipSupService/src/SipLocalConfig.cpp" "CMakeFiles/SipSupService.dir/home/GB28181-Server/SipSupService/src/SipLocalConfig.o" "gcc" "CMakeFiles/SipSupService.dir/home/GB28181-Server/SipSupService/src/SipLocalConfig.o.d"
   "/home/GB28181-Server/SipSupService/src/main.cpp" "CMakeFiles/SipSupService.dir/home/GB28181-Server/SipSupService/src/main.o" "gcc" "CMakeFiles/SipSupService.dir/home/GB28181-Server/SipSupService/src/main.o.d"
   )
 

@@ -145,24 +145,7 @@ CMakeFiles/SipSupService.dir/home/GB28181-Server/SipSupService/src/main.o: \
  /usr/include/c++/11/bits/locale_facets.tcc \
  /usr/include/c++/11/bits/basic_ios.tcc \
  /usr/include/c++/11/bits/ostream.tcc /usr/include/c++/11/istream \
- /usr/include/c++/11/bits/istream.tcc \
- /home/GB28181-Server/SipSupService/cmake/../../3rd/include/glog/logging.h \
- /usr/include/string.h /usr/include/strings.h /usr/include/c++/11/sstream \
- /usr/include/c++/11/bits/sstream.tcc /usr/include/unistd.h \
- /usr/include/x86_64-linux-gnu/bits/posix_opt.h \
- /usr/include/x86_64-linux-gnu/bits/environments.h \
- /usr/include/x86_64-linux-gnu/bits/confname.h \
- /usr/include/x86_64-linux-gnu/bits/getopt_posix.h \
- /usr/include/x86_64-linux-gnu/bits/getopt_core.h \
- /usr/include/x86_64-linux-gnu/bits/unistd_ext.h \
- /usr/include/linux/close_range.h /usr/include/c++/11/vector \
- /usr/include/c++/11/bits/stl_uninitialized.h \
- /usr/include/c++/11/bits/stl_vector.h \
- /usr/include/c++/11/bits/stl_bvector.h \
- /usr/include/c++/11/bits/vector.tcc /usr/include/inttypes.h \
- /home/GB28181-Server/SipSupService/cmake/../../3rd/include/glog/log_severity.h \
- /home/GB28181-Server/SipSupService/cmake/../../3rd/include/glog/vlog_is_on.h \
- /usr/include/signal.h \
+ /usr/include/c++/11/bits/istream.tcc /usr/include/signal.h \
  /usr/include/x86_64-linux-gnu/bits/signum-generic.h \
  /usr/include/x86_64-linux-gnu/bits/signum-arch.h \
  /usr/include/x86_64-linux-gnu/bits/types/sig_atomic_t.h \
@@ -179,7 +162,14 @@ CMakeFiles/SipSupService.dir/home/GB28181-Server/SipSupService/src/main.o: \
  /usr/include/x86_64-linux-gnu/bits/types/stack_t.h \
  /usr/include/x86_64-linux-gnu/sys/ucontext.h \
  /usr/include/x86_64-linux-gnu/bits/sigstack.h \
- /usr/include/x86_64-linux-gnu/bits/sigstksz.h \
+ /usr/include/x86_64-linux-gnu/bits/sigstksz.h /usr/include/unistd.h \
+ /usr/include/x86_64-linux-gnu/bits/posix_opt.h \
+ /usr/include/x86_64-linux-gnu/bits/environments.h \
+ /usr/include/x86_64-linux-gnu/bits/confname.h \
+ /usr/include/x86_64-linux-gnu/bits/getopt_posix.h \
+ /usr/include/x86_64-linux-gnu/bits/getopt_core.h \
+ /usr/include/x86_64-linux-gnu/bits/unistd_ext.h \
+ /usr/include/linux/close_range.h \
  /usr/include/x86_64-linux-gnu/bits/ss_flags.h \
  /usr/include/x86_64-linux-gnu/bits/types/struct_sigstack.h \
  /usr/include/x86_64-linux-gnu/bits/sigthread.h \
@@ -237,6 +227,7 @@ CMakeFiles/SipSupService.dir/home/GB28181-Server/SipSupService/src/main.o: \
  /home/GB28181-Server/SipSupService/cmake/../../3rd/include/pjsip/pjmedia/frame.h \
  /home/GB28181-Server/SipSupService/cmake/../../3rd/include/pjsip/pj/string.h \
  /home/GB28181-Server/SipSupService/cmake/../../3rd/include/pjsip/pj/compat/string.h \
+ /usr/include/string.h /usr/include/strings.h \
  /home/GB28181-Server/SipSupService/cmake/../../3rd/include/pjsip/pj/assert.h \
  /home/GB28181-Server/SipSupService/cmake/../../3rd/include/pjsip/pj/compat/assert.h \
  /usr/include/assert.h \
@@ -418,7 +409,11 @@ CMakeFiles/SipSupService.dir/home/GB28181-Server/SipSupService/src/main.o: \
  /usr/include/c++/11/array /usr/include/c++/11/bits/uses_allocator.h \
  /usr/include/c++/11/bits/invoke.h \
  /usr/include/c++/11/bits/stl_multimap.h \
- /usr/include/c++/11/bits/erase_if.h \
+ /usr/include/c++/11/bits/erase_if.h /usr/include/c++/11/vector \
+ /usr/include/c++/11/bits/stl_uninitialized.h \
+ /usr/include/c++/11/bits/stl_vector.h \
+ /usr/include/c++/11/bits/stl_bvector.h \
+ /usr/include/c++/11/bits/vector.tcc \
  /home/GB28181-Server/SipSupService/cmake/../../3rd/include/jrtplib3/rtptcpaddress.h \
  /home/GB28181-Server/SipSupService/cmake/../../3rd/include/jrtplib3/rtpudpv4transmitter.h \
  /home/GB28181-Server/SipSupService/cmake/../../3rd/include/jrtplib3/rtpipv4destination.h \
@@ -430,6 +425,25 @@ CMakeFiles/SipSupService.dir/home/GB28181-Server/SipSupService/src/main.o: \
  /home/GB28181-Server/SipSupService/cmake/../../3rd/include/jrtplib3/rtperrors.h \
  /home/GB28181-Server/SipSupService/cmake/../../3rd/include/jrtplib3/rtplibraryversion.h \
  /home/GB28181-Server/SipSupService/cmake/../../3rd/include/jrtplib3/rtcpsrpacket.h \
+ /home/GB28181-Server/SipSupService/cmake/../../3rd/include/libevent/event2/event.h \
+ /home/GB28181-Server/SipSupService/cmake/../../3rd/include/libevent/event2/visibility.h \
+ /home/GB28181-Server/SipSupService/cmake/../../3rd/include/libevent/event2/event-config.h \
+ /home/GB28181-Server/SipSupService/cmake/../../3rd/include/libevent/event2/util.h \
+ /usr/include/netdb.h /usr/include/rpc/netdb.h \
+ /usr/include/x86_64-linux-gnu/bits/netdb.h \
+ /home/GB28181-Server/SipSupService/cmake/../../3rd/include/libevent/event2/listener.h \
+ /home/GB28181-Server/SipSupService/cmake/../../3rd/include/libevent/event2/bufferevent.h \
+ /home/GB28181-Server/SipSupService/cmake/../../3rd/include/libevent/event2/buffer.h \
+ /usr/include/x86_64-linux-gnu/sys/uio.h \
+ /usr/include/x86_64-linux-gnu/bits/uio_lim.h \
+ /usr/include/x86_64-linux-gnu/bits/uio-ext.h \
+ /home/GB28181-Server/SipSupService/cmake/../../3rd/include/libevent/event2/thread.h \
+ /home/GB28181-Server/SipSupService/cmake/../include/Common.h \
+ /home/GB28181-Server/SipSupService/cmake/../../3rd/include/glog/logging.h \
+ /usr/include/c++/11/sstream /usr/include/c++/11/bits/sstream.tcc \
+ /usr/include/inttypes.h \
+ /home/GB28181-Server/SipSupService/cmake/../../3rd/include/glog/log_severity.h \
+ /home/GB28181-Server/SipSupService/cmake/../../3rd/include/glog/vlog_is_on.h \
  /home/GB28181-Server/SipSupService/cmake/../../3rd/include/tinyxml2/tinyxml2.h \
  /usr/include/c++/11/climits \
  /usr/lib/gcc/x86_64-linux-gnu/11/include/limits.h \
@@ -439,7 +453,7 @@ CMakeFiles/SipSupService.dir/home/GB28181-Server/SipSupService/src/main.o: \
  /usr/include/linux/limits.h \
  /usr/include/x86_64-linux-gnu/bits/posix2_lim.h \
  /usr/include/x86_64-linux-gnu/bits/xopen_lim.h \
- /usr/include/x86_64-linux-gnu/bits/uio_lim.h /usr/include/c++/11/cstring \
+ /usr/include/c++/11/cstring \
  /home/GB28181-Server/SipSupService/cmake/../../3rd/include/json/json.h \
  /home/GB28181-Server/SipSupService/cmake/../../3rd/include/json/autolink.h \
  /home/GB28181-Server/SipSupService/cmake/../../3rd/include/json/config.h \
@@ -452,16 +466,6 @@ CMakeFiles/SipSupService.dir/home/GB28181-Server/SipSupService/src/main.o: \
  /usr/include/c++/11/bits/deque.tcc /usr/include/c++/11/stack \
  /usr/include/c++/11/bits/stl_stack.h \
  /home/GB28181-Server/SipSupService/cmake/../../3rd/include/json/writer.h \
- /home/GB28181-Server/SipSupService/cmake/../../3rd/include/libevent/event2/event.h \
- /home/GB28181-Server/SipSupService/cmake/../../3rd/include/libevent/event2/visibility.h \
- /home/GB28181-Server/SipSupService/cmake/../../3rd/include/libevent/event2/event-config.h \
- /home/GB28181-Server/SipSupService/cmake/../../3rd/include/libevent/event2/util.h \
- /usr/include/netdb.h /usr/include/rpc/netdb.h \
- /usr/include/x86_64-linux-gnu/bits/netdb.h \
- /home/GB28181-Server/SipSupService/cmake/../../3rd/include/libevent/event2/listener.h \
- /home/GB28181-Server/SipSupService/cmake/../../3rd/include/libevent/event2/bufferevent.h \
- /home/GB28181-Server/SipSupService/cmake/../../3rd/include/libevent/event2/buffer.h \
- /usr/include/x86_64-linux-gnu/sys/uio.h \
- /usr/include/x86_64-linux-gnu/bits/uio-ext.h \
- /home/GB28181-Server/SipSupService/cmake/../../3rd/include/libevent/event2/thread.h \
+ /home/GB28181-Server/SipSupService/cmake/../include/SipLocalConfig.h \
+ /home/GB28181-Server/SipSupService/cmake/../include/ConfReader.h \
  /home/GB28181-Server/SipSupService/cmake/../include/Common.h

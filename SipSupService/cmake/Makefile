@@ -130,6 +130,36 @@ SipSupService/fast:
 .PHONY : SipSupService/fast
 
 # target to build an object file
+home/GB28181-Server/SipSupService/src/ConfReader.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/SipSupService.dir/build.make CMakeFiles/SipSupService.dir/home/GB28181-Server/SipSupService/src/ConfReader.o
+.PHONY : home/GB28181-Server/SipSupService/src/ConfReader.o
+
+# target to preprocess a source file
+home/GB28181-Server/SipSupService/src/ConfReader.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/SipSupService.dir/build.make CMakeFiles/SipSupService.dir/home/GB28181-Server/SipSupService/src/ConfReader.i
+.PHONY : home/GB28181-Server/SipSupService/src/ConfReader.i
+
+# target to generate assembly for a file
+home/GB28181-Server/SipSupService/src/ConfReader.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/SipSupService.dir/build.make CMakeFiles/SipSupService.dir/home/GB28181-Server/SipSupService/src/ConfReader.s
+.PHONY : home/GB28181-Server/SipSupService/src/ConfReader.s
+
+# target to build an object file
+home/GB28181-Server/SipSupService/src/SipLocalConfig.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/SipSupService.dir/build.make CMakeFiles/SipSupService.dir/home/GB28181-Server/SipSupService/src/SipLocalConfig.o
+.PHONY : home/GB28181-Server/SipSupService/src/SipLocalConfig.o
+
+# target to preprocess a source file
+home/GB28181-Server/SipSupService/src/SipLocalConfig.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/SipSupService.dir/build.make CMakeFiles/SipSupService.dir/home/GB28181-Server/SipSupService/src/SipLocalConfig.i
+.PHONY : home/GB28181-Server/SipSupService/src/SipLocalConfig.i
+
+# target to generate assembly for a file
+home/GB28181-Server/SipSupService/src/SipLocalConfig.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/SipSupService.dir/build.make CMakeFiles/SipSupService.dir/home/GB28181-Server/SipSupService/src/SipLocalConfig.s
+.PHONY : home/GB28181-Server/SipSupService/src/SipLocalConfig.s
+
+# target to build an object file
 home/GB28181-Server/SipSupService/src/main.o:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/SipSupService.dir/build.make CMakeFiles/SipSupService.dir/home/GB28181-Server/SipSupService/src/main.o
 .PHONY : home/GB28181-Server/SipSupService/src/main.o
@@ -153,6 +183,12 @@ help:
 	@echo "... edit_cache"
 	@echo "... rebuild_cache"
 	@echo "... SipSupService"
+	@echo "... home/GB28181-Server/SipSupService/src/ConfReader.o"
+	@echo "... home/GB28181-Server/SipSupService/src/ConfReader.i"
+	@echo "... home/GB28181-Server/SipSupService/src/ConfReader.s"
+	@echo "... home/GB28181-Server/SipSupService/src/SipLocalConfig.o"
+	@echo "... home/GB28181-Server/SipSupService/src/SipLocalConfig.i"
+	@echo "... home/GB28181-Server/SipSupService/src/SipLocalConfig.s"
 	@echo "... home/GB28181-Server/SipSupService/src/main.o"
 	@echo "... home/GB28181-Server/SipSupService/src/main.i"
 	@echo "... home/GB28181-Server/SipSupService/src/main.s"
