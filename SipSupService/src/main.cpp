@@ -27,6 +27,7 @@
 
 #include"Common.h"
 #include"SipLocalConfig.h"
+#include"GlobalCtl.h"
 
 class SetGlogLevel
 {
@@ -68,6 +69,13 @@ int main()
 		LOG(ERROR)<<"read config error";
 		return ret;
 	}
+	bool re=GlobalCtl::instance()->init(config);
+	if(re==false)
+	{
+		LOG(ERROR)<<"init error";
+		return -1;
+	}
+	LOG(INFO)<<GBOJ(gConfig)->sipIp()<<":"<<GBOJ(gConfig)->sipPort();
 	while(true)
 	{
 		sleep(30);

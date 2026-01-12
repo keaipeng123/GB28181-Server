@@ -468,4 +468,6 @@ CMakeFiles/SipSupService.dir/home/GB28181-Server/SipSupService/src/main.o: \
  /home/GB28181-Server/SipSupService/cmake/../../3rd/include/json/writer.h \
  /home/GB28181-Server/SipSupService/cmake/../include/SipLocalConfig.h \
  /home/GB28181-Server/SipSupService/cmake/../include/ConfReader.h \
- /home/GB28181-Server/SipSupService/cmake/../include/Common.h
+ /home/GB28181-Server/SipSupService/cmake/../include/Common.h \
+ /home/GB28181-Server/SipSupService/cmake/../include/GlobalCtl.h \
+ /home/GB28181-Server/SipSupService/cmake/../include/SipLocalConfig.h

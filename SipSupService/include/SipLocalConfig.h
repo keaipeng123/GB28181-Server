@@ -11,6 +11,10 @@ class SipLocalConfig
 
     int ReadConf();
 
+    inline string localIp(){return m_localIp;}
+    inline string sipIp(){return m_sipIp;}
+    inline int sipPort(){return m_sipPort;}
+
     private:
     ConfReader m_conf;
     string m_localIp;
@@ -23,4 +27,5 @@ class SipLocalConfig
     int m_subNodeAuth;
 
 };
+
 #endif

@@ -145,6 +145,21 @@ home/GB28181-Server/SipSupService/src/ConfReader.s:
 .PHONY : home/GB28181-Server/SipSupService/src/ConfReader.s
 
 # target to build an object file
+home/GB28181-Server/SipSupService/src/GlobalCtl.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/SipSupService.dir/build.make CMakeFiles/SipSupService.dir/home/GB28181-Server/SipSupService/src/GlobalCtl.o
+.PHONY : home/GB28181-Server/SipSupService/src/GlobalCtl.o
+
+# target to preprocess a source file
+home/GB28181-Server/SipSupService/src/GlobalCtl.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/SipSupService.dir/build.make CMakeFiles/SipSupService.dir/home/GB28181-Server/SipSupService/src/GlobalCtl.i
+.PHONY : home/GB28181-Server/SipSupService/src/GlobalCtl.i
+
+# target to generate assembly for a file
+home/GB28181-Server/SipSupService/src/GlobalCtl.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/SipSupService.dir/build.make CMakeFiles/SipSupService.dir/home/GB28181-Server/SipSupService/src/GlobalCtl.s
+.PHONY : home/GB28181-Server/SipSupService/src/GlobalCtl.s
+
+# target to build an object file
 home/GB28181-Server/SipSupService/src/SipLocalConfig.o:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/SipSupService.dir/build.make CMakeFiles/SipSupService.dir/home/GB28181-Server/SipSupService/src/SipLocalConfig.o
 .PHONY : home/GB28181-Server/SipSupService/src/SipLocalConfig.o
@@ -186,6 +201,9 @@ help:
 	@echo "... home/GB28181-Server/SipSupService/src/ConfReader.o"
 	@echo "... home/GB28181-Server/SipSupService/src/ConfReader.i"
 	@echo "... home/GB28181-Server/SipSupService/src/ConfReader.s"
+	@echo "... home/GB28181-Server/SipSupService/src/GlobalCtl.o"
+	@echo "... home/GB28181-Server/SipSupService/src/GlobalCtl.i"
+	@echo "... home/GB28181-Server/SipSupService/src/GlobalCtl.s"
 	@echo "... home/GB28181-Server/SipSupService/src/SipLocalConfig.o"
 	@echo "... home/GB28181-Server/SipSupService/src/SipLocalConfig.i"
 	@echo "... home/GB28181-Server/SipSupService/src/SipLocalConfig.s"

@@ -92,5 +92,3 @@ int SipLocalConfig::ReadConf()
 
     return ret;
 }
-
-   
