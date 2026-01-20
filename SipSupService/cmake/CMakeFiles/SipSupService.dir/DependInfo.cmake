@@ -9,8 +9,12 @@ set(CMAKE_DEPENDS_LANGUAGES
 # The set of dependency files which are needed:
 set(CMAKE_DEPENDS_DEPENDENCY_FILES
   "/home/GB28181-Server/SipSupService/src/ConfReader.cpp" "CMakeFiles/SipSupService.dir/home/GB28181-Server/SipSupService/src/ConfReader.o" "gcc" "CMakeFiles/SipSupService.dir/home/GB28181-Server/SipSupService/src/ConfReader.o.d"
+  "/home/GB28181-Server/SipSupService/src/ECThread.cpp" "CMakeFiles/SipSupService.dir/home/GB28181-Server/SipSupService/src/ECThread.o" "gcc" "CMakeFiles/SipSupService.dir/home/GB28181-Server/SipSupService/src/ECThread.o.d"
   "/home/GB28181-Server/SipSupService/src/GlobalCtl.cpp" "CMakeFiles/SipSupService.dir/home/GB28181-Server/SipSupService/src/GlobalCtl.o" "gcc" "CMakeFiles/SipSupService.dir/home/GB28181-Server/SipSupService/src/GlobalCtl.o.d"
+  "/home/GB28181-Server/SipSupService/src/SipCore.cpp" "CMakeFiles/SipSupService.dir/home/GB28181-Server/SipSupService/src/SipCore.o" "gcc" "CMakeFiles/SipSupService.dir/home/GB28181-Server/SipSupService/src/SipCore.o.d"
   "/home/GB28181-Server/SipSupService/src/SipLocalConfig.cpp" "CMakeFiles/SipSupService.dir/home/GB28181-Server/SipSupService/src/SipLocalConfig.o" "gcc" "CMakeFiles/SipSupService.dir/home/GB28181-Server/SipSupService/src/SipLocalConfig.o.d"
+  "/home/GB28181-Server/SipSupService/src/SipTaskBase.cpp" "CMakeFiles/SipSupService.dir/home/GB28181-Server/SipSupService/src/SipTaskBase.o" "gcc" "CMakeFiles/SipSupService.dir/home/GB28181-Server/SipSupService/src/SipTaskBase.o.d"
+  "/home/GB28181-Server/SipSupService/src/ThreadPool.cpp" "CMakeFiles/SipSupService.dir/home/GB28181-Server/SipSupService/src/ThreadPool.o" "gcc" "CMakeFiles/SipSupService.dir/home/GB28181-Server/SipSupService/src/ThreadPool.o.d"
   "/home/GB28181-Server/SipSupService/src/main.cpp" "CMakeFiles/SipSupService.dir/home/GB28181-Server/SipSupService/src/main.o" "gcc" "CMakeFiles/SipSupService.dir/home/GB28181-Server/SipSupService/src/main.o.d"
   )
 

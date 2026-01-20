@@ -145,6 +145,21 @@ home/GB28181-Server/SipSupService/src/ConfReader.s:
 .PHONY : home/GB28181-Server/SipSupService/src/ConfReader.s
 
 # target to build an object file
+home/GB28181-Server/SipSupService/src/ECThread.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/SipSupService.dir/build.make CMakeFiles/SipSupService.dir/home/GB28181-Server/SipSupService/src/ECThread.o
+.PHONY : home/GB28181-Server/SipSupService/src/ECThread.o
+
+# target to preprocess a source file
+home/GB28181-Server/SipSupService/src/ECThread.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/SipSupService.dir/build.make CMakeFiles/SipSupService.dir/home/GB28181-Server/SipSupService/src/ECThread.i
+.PHONY : home/GB28181-Server/SipSupService/src/ECThread.i
+
+# target to generate assembly for a file
+home/GB28181-Server/SipSupService/src/ECThread.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/SipSupService.dir/build.make CMakeFiles/SipSupService.dir/home/GB28181-Server/SipSupService/src/ECThread.s
+.PHONY : home/GB28181-Server/SipSupService/src/ECThread.s
+
+# target to build an object file
 home/GB28181-Server/SipSupService/src/GlobalCtl.o:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/SipSupService.dir/build.make CMakeFiles/SipSupService.dir/home/GB28181-Server/SipSupService/src/GlobalCtl.o
 .PHONY : home/GB28181-Server/SipSupService/src/GlobalCtl.o
@@ -160,6 +175,21 @@ home/GB28181-Server/SipSupService/src/GlobalCtl.s:
 .PHONY : home/GB28181-Server/SipSupService/src/GlobalCtl.s
 
 # target to build an object file
+home/GB28181-Server/SipSupService/src/SipCore.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/SipSupService.dir/build.make CMakeFiles/SipSupService.dir/home/GB28181-Server/SipSupService/src/SipCore.o
+.PHONY : home/GB28181-Server/SipSupService/src/SipCore.o
+
+# target to preprocess a source file
+home/GB28181-Server/SipSupService/src/SipCore.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/SipSupService.dir/build.make CMakeFiles/SipSupService.dir/home/GB28181-Server/SipSupService/src/SipCore.i
+.PHONY : home/GB28181-Server/SipSupService/src/SipCore.i
+
+# target to generate assembly for a file
+home/GB28181-Server/SipSupService/src/SipCore.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/SipSupService.dir/build.make CMakeFiles/SipSupService.dir/home/GB28181-Server/SipSupService/src/SipCore.s
+.PHONY : home/GB28181-Server/SipSupService/src/SipCore.s
+
+# target to build an object file
 home/GB28181-Server/SipSupService/src/SipLocalConfig.o:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/SipSupService.dir/build.make CMakeFiles/SipSupService.dir/home/GB28181-Server/SipSupService/src/SipLocalConfig.o
 .PHONY : home/GB28181-Server/SipSupService/src/SipLocalConfig.o
@@ -173,6 +203,36 @@ home/GB28181-Server/SipSupService/src/SipLocalConfig.i:
 home/GB28181-Server/SipSupService/src/SipLocalConfig.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/SipSupService.dir/build.make CMakeFiles/SipSupService.dir/home/GB28181-Server/SipSupService/src/SipLocalConfig.s
 .PHONY : home/GB28181-Server/SipSupService/src/SipLocalConfig.s
+
+# target to build an object file
+home/GB28181-Server/SipSupService/src/SipTaskBase.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/SipSupService.dir/build.make CMakeFiles/SipSupService.dir/home/GB28181-Server/SipSupService/src/SipTaskBase.o
+.PHONY : home/GB28181-Server/SipSupService/src/SipTaskBase.o
+
+# target to preprocess a source file
+home/GB28181-Server/SipSupService/src/SipTaskBase.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/SipSupService.dir/build.make CMakeFiles/SipSupService.dir/home/GB28181-Server/SipSupService/src/SipTaskBase.i
+.PHONY : home/GB28181-Server/SipSupService/src/SipTaskBase.i
+
+# target to generate assembly for a file
+home/GB28181-Server/SipSupService/src/SipTaskBase.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/SipSupService.dir/build.make CMakeFiles/SipSupService.dir/home/GB28181-Server/SipSupService/src/SipTaskBase.s
+.PHONY : home/GB28181-Server/SipSupService/src/SipTaskBase.s
+
+# target to build an object file
+home/GB28181-Server/SipSupService/src/ThreadPool.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/SipSupService.dir/build.make CMakeFiles/SipSupService.dir/home/GB28181-Server/SipSupService/src/ThreadPool.o
+.PHONY : home/GB28181-Server/SipSupService/src/ThreadPool.o
+
+# target to preprocess a source file
+home/GB28181-Server/SipSupService/src/ThreadPool.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/SipSupService.dir/build.make CMakeFiles/SipSupService.dir/home/GB28181-Server/SipSupService/src/ThreadPool.i
+.PHONY : home/GB28181-Server/SipSupService/src/ThreadPool.i
+
+# target to generate assembly for a file
+home/GB28181-Server/SipSupService/src/ThreadPool.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/SipSupService.dir/build.make CMakeFiles/SipSupService.dir/home/GB28181-Server/SipSupService/src/ThreadPool.s
+.PHONY : home/GB28181-Server/SipSupService/src/ThreadPool.s
 
 # target to build an object file
 home/GB28181-Server/SipSupService/src/main.o:
@@ -201,12 +261,24 @@ help:
 	@echo "... home/GB28181-Server/SipSupService/src/ConfReader.o"
 	@echo "... home/GB28181-Server/SipSupService/src/ConfReader.i"
 	@echo "... home/GB28181-Server/SipSupService/src/ConfReader.s"
+	@echo "... home/GB28181-Server/SipSupService/src/ECThread.o"
+	@echo "... home/GB28181-Server/SipSupService/src/ECThread.i"
+	@echo "... home/GB28181-Server/SipSupService/src/ECThread.s"
 	@echo "... home/GB28181-Server/SipSupService/src/GlobalCtl.o"
 	@echo "... home/GB28181-Server/SipSupService/src/GlobalCtl.i"
 	@echo "... home/GB28181-Server/SipSupService/src/GlobalCtl.s"
+	@echo "... home/GB28181-Server/SipSupService/src/SipCore.o"
+	@echo "... home/GB28181-Server/SipSupService/src/SipCore.i"
+	@echo "... home/GB28181-Server/SipSupService/src/SipCore.s"
 	@echo "... home/GB28181-Server/SipSupService/src/SipLocalConfig.o"
 	@echo "... home/GB28181-Server/SipSupService/src/SipLocalConfig.i"
 	@echo "... home/GB28181-Server/SipSupService/src/SipLocalConfig.s"
+	@echo "... home/GB28181-Server/SipSupService/src/SipTaskBase.o"
+	@echo "... home/GB28181-Server/SipSupService/src/SipTaskBase.i"
+	@echo "... home/GB28181-Server/SipSupService/src/SipTaskBase.s"
+	@echo "... home/GB28181-Server/SipSupService/src/ThreadPool.o"
+	@echo "... home/GB28181-Server/SipSupService/src/ThreadPool.i"
+	@echo "... home/GB28181-Server/SipSupService/src/ThreadPool.s"
 	@echo "... home/GB28181-Server/SipSupService/src/main.o"
 	@echo "... home/GB28181-Server/SipSupService/src/main.i"
 	@echo "... home/GB28181-Server/SipSupService/src/main.s"

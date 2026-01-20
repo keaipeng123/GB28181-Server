@@ -1,5 +1,5 @@
-#创建了一个名为 EXE_NAME的 CMake 变量，并将其值设置为 "SipSupService"
-SET(EXE_NAME SipSupService)
+#创建了一个名为 EXE_NAME的 CMake 变量，并将其值设置为 "SipSubService"
+SET(EXE_NAME SipSubService)
 #打印当前使用的操作系统
 MESSAGE(STATUS "operation system is ${CMAKE_SYSTEM}")
 #在编译选项中开启所有警告和添加c++11支持

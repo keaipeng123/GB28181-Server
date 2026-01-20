@@ -12,6 +12,7 @@ class SipLocalConfig
     int ReadConf();
 
     inline string localIp(){return m_localIp;}
+    inline int localPort(){return m_localPort;}
     inline string sipIp(){return m_sipIp;}
     inline int sipPort(){return m_sipPort;}
 
