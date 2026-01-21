@@ -76,12 +76,12 @@ bool SipCore::InitSip(int sipPort)
         }
         //缓存池,pjsip中的内存均是这个缓存池分配的，所以需要将该缓存池储存起来，不能销毁,
         //此处定义了一个栈对象，当函数结束这个对象也就释放了；cachingPool需要和sipCore对象的生命周期一致，所以将其放在类的成员中
-        pj_caching_pool cachingPool;
-        pj_caching_pool_init(&cachingPool,NULL,SIP_STACK_SIZE);
+        //pj_caching_pool cachingPool;
+        pj_caching_pool_init(&m_cachingPool,NULL,SIP_STACK_SIZE);
 
         //【目的】创建并返回 SIP 端点对象
         //【详解】端点是整个 SIP 栈的核心句柄，后续所有模块（事务层、UA 层、传输层、定时器、消息调度）都要挂到它上面。
-        status=pjsip_endpt_create(&cachingPool.factory,NULL,&m_endpt);
+        status=pjsip_endpt_create(&m_cachingPool.factory,NULL,&m_endpt);
         if(PJ_SUCCESS!=status)
         {
             LOG(ERROR)<<"create endpt faild,code:"<<status;

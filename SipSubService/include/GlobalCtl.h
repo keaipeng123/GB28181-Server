@@ -16,6 +16,39 @@ class GlobalCtl
     SipLocalConfig* gConfig;
     ThreadPool* gThpool =NULL;
     SipCore* gSipServer=NULL;
+
+    typedef struct _SupDomainInfo{
+        _SupDomainInfo()
+        {
+            sipId="";
+            addrIp="";
+            sipPort=0;
+            protocal=0;
+            registered=false;
+            expires=0;
+            isAuth=false;
+            usr="";
+            pwd="";
+            realm="";
+        }
+        string sipId;
+        string addrIp;
+        int sipPort;
+        int protocal;
+        bool registered;
+        int expires;
+        bool isAuth;
+        string usr;
+        string pwd;
+        string realm;
+    }SupDomainInfo;
+    typedef list<SupDomainInfo> SUPDOMAININFOLIST;
+
+    SUPDOMAININFOLIST& getSupDomainInfoList()
+    {
+        return supDomainInfoList;
+    }
+
     private:
     //私有构造函数：防止外部通过 new GlobalCtl() 创建实例
     GlobalCtl(void)
@@ -28,6 +61,7 @@ class GlobalCtl
     const GlobalCtl& operator=(const GlobalCtl& global);
 
     static GlobalCtl* m_pInstance;
+    static SUPDOMAININFOLIST supDomainInfoList;
     
 };
 #endif
