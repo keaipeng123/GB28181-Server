@@ -1,0 +1,28 @@
+# VS Code
+.vscode/
+SipSubService/.vscode/
+SipSupService/.vscode/
+
+# Build artifacts (in-source builds)
+SipSubService/cmake/CMakeFiles/
+SipSubService/cmake/CMakeCache.txt
+SipSubService/cmake/Makefile
+SipSubService/cmake/cmake_install.cmake
+SipSubService/cmake/*.cmake
+SipSubService/cmake/SipSubService
+
+SipSupService/cmake/CMakeFiles/
+SipSupService/cmake/CMakeCache.txt
+SipSupService/cmake/Makefile
+SipSupService/cmake/cmake_install.cmake
+SipSupService/cmake/*.cmake
+SipSupService/cmake/SipSupService
+
+# Logs / captures
+log/
+*.pcap
+
+# Common
+*.o
+*.obj
+*.d
