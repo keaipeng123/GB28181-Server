@@ -100,6 +100,7 @@ int main()
 	LOG(INFO)<<"main thread pid:"<<pthread_self();
 
 	SipRegister* sipRegister=new SipRegister();
+	sipRegister->registerServiceStart();
 
 	while(true)
 	{
