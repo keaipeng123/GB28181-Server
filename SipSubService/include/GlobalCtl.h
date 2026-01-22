@@ -7,6 +7,18 @@
 
 class GlobalCtl;
 #define GBOJ(obj) GlobalCtl::instance()->obj //宏定义简化单例成员访问
+
+//每个线程在使用PJSIP功能前必须注册
+static pj_status_t pjcall_thread_register(pj_thread_desc desc)
+{
+    pj_thread_t* thread=0; 
+    if(!pj_thread_is_registered())
+    {
+        return pj_thread_register(NULL,desc,&thread);
+    }
+    return PJ_SUCCESS;
+}
+
 class GlobalCtl
 {
     public:

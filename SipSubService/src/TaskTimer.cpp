@@ -1,6 +1,7 @@
 #include"TaskTimer.h"
 #include"ECThread.h"
 #include"Common.h"
+#include"GlobalCtl.h"
 using namespace EC;
 TaskTimer::TaskTimer(int TimeSecond)
 {
@@ -55,6 +56,8 @@ void* TaskTimer::timer(void* context)
             lastTm=curTm;
             if(pthis->m_timerFun!=NULL)
             {
+                pj_thread_desc desc;
+                pjcall_thread_register(desc);
                 pthis->m_timerFun(pthis->m_funParam);
             }
         }
