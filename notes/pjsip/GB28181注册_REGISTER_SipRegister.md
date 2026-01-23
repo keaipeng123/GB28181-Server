@@ -4,6 +4,8 @@
 >
 > - [SipSubService/include/SipRegister.h](../../SipSubService/include/SipRegister.h)
 > - [SipSubService/src/SipRegister.cpp](../../SipSubService/src/SipRegister.cpp)
+> - [SipSubService/include/SipMessage.h](../../SipSubService/include/SipMessage.h)
+> - [SipSubService/src/SipMessage.cpp](../../SipSubService/src/SipMessage.cpp)
 >
 > 前置建议先读：
 >
@@ -21,9 +23,23 @@
 
 `SipRegister` 负责“向上级平台（SUP）注册”。它的行为很直接：
 
-- 构造函数里遍历 `GlobalCtl::instance()->getSupDomainInfoList()`
-- 对每个未注册（`registered == false`）的上级节点 `node` 调用 `gbRegister(node)`
-- 注册成功后在回调里把该 `node.registered = true`
+### 1.1 定时轮询式注册（当前代码的真实行为）
+
+当前实现并不是“构造函数里立刻遍历并注册”。在 [SipSubService/src/SipRegister.cpp](../../SipSubService/src/SipRegister.cpp) 里，构造函数中那段遍历注册逻辑已经被注释掉。
+
+现在的实际流程是：
+
+1) `SipRegister` 构造函数里创建一个 `TaskTimer(3)`（每 3 秒触发一次）。
+2) 调用 `registerServiceStart()` 后：
+   - `m_regTimer->setTimerFun(SipRegister::RegisterProc, this)`
+   - `m_regTimer->start()` 启动定时线程
+3) 定时线程每次触发 `RegisterProc()`：
+   - 遍历 `GlobalCtl::instance()->getSupDomainInfoList()`
+   - 对所有 `registered == false` 的节点调用 `gbRegister(node)`
+4) 当收到注册响应时（异步）：在 `client_cb()` 里根据响应码更新 `node.registered=true`。
+
+> 这种模式的好处是简单粗暴：没注册上就一直重试。
+> 但要注意“并发与重复发送”的工程风险，下面会单独讲。
 
 > 这里的 `GlobalCtl::SupDomainInfo` 可以理解为“一个上级平台的注册目标”，里面通常会有：对端 `addrIp/sipPort`、SIP ID、transport、expires、以及 `registered` 状态。
 
@@ -31,20 +47,66 @@
 
 ## 2. 注册关键字段：From / To / Request-URI / Contact
 
-在 [SipSubService/src/SipRegister.cpp](../../SipSubService/src/SipRegister.cpp) 里，`gbRegister()` 拼了 4 个字符串：
+在 [SipSubService/src/SipRegister.cpp](../../SipSubService/src/SipRegister.cpp) 里，`gbRegister()` 会借助 `SipMessage` 拼 4 个字符串（见 [SipSubService/include/SipMessage.h](../../SipSubService/include/SipMessage.h)、[SipSubService/src/SipMessage.cpp](../../SipSubService/src/SipMessage.cpp)）：
 
 1) `fromHeader`：`<sip:本端ID@本端域>`
 2) `toHeader`：`<sip:本端ID@本端域>`（REGISTER 场景里通常与 From 一致）
 3) `requestUrl`：`sip:对端ID@对端IP:对端端口;transport=udp|tcp`
-4) `contactUrl`：`<sip:本端ID@本端IP:本端端口>`
+4) `contactUrl`：`sip:本端ID@本端IP:本端端口`
 
 对应到 SIP REGISTER 的语义：
 
 - `From/To`：声明“谁在注册”（AOR，Address-Of-Record），GB28181里通常形如 `sip:设备ID@域ID`。
-  - 你当前代码用的是 `sipId@sipIp`（`sipIp` 更像 IP，不像“域ID”）；很多实现也能跑通，但学习时要知道规范里常见写法是 `设备ID@域ID`。
+  - 你当前代码用的是 `sipId@sipIp`。
 - `Request-URI`：发给谁（Registrar 的地址）。你这里发给 `node.addrIp:node.sipPort`，并加了 `transport=` 参数。
 - `Contact`：注册成功后，对端以后“如何联系到你”（你实际可接收请求的地址/端口）。
 - `Expires`：有效期（秒），来自 `node.expires`。
+
+### 2.1 `SipMessage` 是做什么的？（只管拼字符串）
+
+`SipMessage` 目前只负责拼 4 个字段字符串，并不直接“发 SIP”——发送仍由 PJSIP 的 `pjsip_regc` 完成。
+
+它的实现特点：
+
+- 内部用 4 个 `char[128]` 缓冲区保存结果：`fromHeader/toHeader/requestUrl/contact`
+- 构造函数里用 `memset` 全部清零
+- 用 `sprintf` 拼接（学习阶段够用，但工程上建议改成 `snprintf` 防止越界）
+
+### 2.2 TCP/UDP 选择逻辑
+
+`gbRegister()` 里：
+
+- 当 `node.protocal == 1`：`Request-URI` 会加 `;transport=tcp`
+- 否则：默认 `udp`
+
+这对应 [SipSubService/src/SipMessage.cpp](../../SipSubService/src/SipMessage.cpp) 里 `setUrl(..., url_proto)` 的默认参数是 `"udp"`。
+
+### 2.3 `pj_str_t` 是什么？（以及你这里的生命周期是否安全）
+
+在 `gbRegister()` 里，你把 `SipMessage` 生成的 C 字符串包成了 `pj_str_t`：
+
+- `pj_str_t from = pj_str(msg.FromHeader());`
+- `pj_str_t to = pj_str(msg.ToHeader());`
+- `pj_str_t line = pj_str(msg.RequestUrl());`
+- `pj_str_t contact = pj_str(msg.Contact());`
+
+`pj_str_t` 可以理解为：`{char* ptr, int len}` 的轻量视图，不一定要求以 `\0` 结尾；你的字符串本身是 `sprintf` 生成的，因此天然有 `\0`。
+
+生命周期要点：
+
+- 这些 `pj_str_t` 指向 `msg` 的成员缓冲区，而 `msg` 是栈对象。
+- 如果某个 PJSIP API 只是“保存指针延迟使用”，就会悬空；如果它在调用时“解析/拷贝到自己的 pool”，就没问题。
+
+经验上：`pjsip_regc_init()` 通常会立刻解析并存储所需字段，所以多数情况下可用。但当你后续遇到“偶现解析失败/野指针”时，要第一时间想到这里。
+
+### 2.4 REGISTER 里 `To` vs `Contact`：别混
+
+你代码里 `From/To` 都设置为“本端 ID@本端地址”。在 REGISTER 语义里：
+
+- `From/To` 更像是声明“我要注册的 AOR 是谁”（注册身份）
+- `Contact` 才是“注册成功后对端如何联系到我”（可达地址）
+
+所以如果你想表达“上级平台应该把请求发到哪里”，核心字段通常是 `Contact`（以及 NAT 场景下的可达性策略），而不是 `To`。
 
 > 小建议：学习时可以抓包对照字段（Wireshark 过滤 `sip.Method == "REGISTER"`），把这 4 个字段逐项对应。
 
@@ -86,6 +148,15 @@
 - 将 `param->token` 强转回 `GlobalCtl::SupDomainInfo*`
 - `code == 200` 则 `registered = true`
 
+补充两个非常关键的“工程约束”：
+
+1) `token` 指向的对象必须在回调触发时仍然有效。
+   - 你这里传的是容器元素的地址（`&node`）。如果容器是 `std::list` 并且元素不被删除，通常是稳定的；但如果容器是 `vector` 或存在元素 erase/realloc，就可能悬空。
+2) 回调线程与定时线程并发：
+   - 回调通常在 PJSIP 的事件线程触发
+   - `RegisterProc()` 在定时线程触发
+   - 它们可能同时读写 `node.registered`，如果没有锁/原子，就存在数据竞争风险（学习阶段先认识这个风险就够了）。
+
 学习建议：
 
 - 只看 `200` 会漏掉很多有价值的状态（例如 `401/407` 鉴权挑战，`403` 禁止，`404` 用户不存在，`408` 超时，`503` 服务不可用等）。
@@ -94,6 +165,19 @@
 ---
 
 ## 5. 常见坑（结合当前实现）
+
+### 5.0 轮询重试可能导致“重复注册风暴”
+
+由于 `RegisterProc()` 每 3 秒遍历一次，且判断条件只有 `registered == false`：
+
+- 如果上级响应慢/丢包/需要鉴权（401/407），在 `registered` 变为 true 之前，会不断发起新的 `pjsip_regc_create/init/send`。
+- 这可能导致同一个上级平台短时间内收到大量 REGISTER。
+
+改进思路（后续做工程化时再上）：
+
+- 增加 `registering/in_flight` 状态，避免并发重复发
+- 加入退避/重试间隔（例如失败后 3s/5s/10s 递增）
+- 把 `expires` 与“续注册”逻辑明确区分：注册成功后在到期前刷新，而不是靠频繁轮询
 
 ### 5.1 `pjsip_regc` 生命周期
 
@@ -107,6 +191,11 @@
 - 如果你只做“一次性注册并更新状态”，通常要在“收到最终响应后”释放 `regc`（否则可能长期泄漏）。
 - 如果你想做“自动续注册/定时刷新”，那就需要把 `regc` 保存为对象成员，并在合适时机 refresh/unregister，再 destroy。
 
+另外，你现在每次 `gbRegister()` 都创建一个新的 `regc`：
+
+- 如果你不保存 `regc`，那就很难在回调里做更完整的处理（例如鉴权后“同一个 regc”重发）。
+- 学习阶段建议先把 `401/407` 打日志看清楚；工程化阶段再决定是否把 `regc` 提升为成员并复用。
+
 ### 5.2 `From/To` 里的“域”到底是什么
 
 GB28181 里常见是 `sip:设备ID@域ID`（域ID类似 `3402000000`），而不是 `@IP`。
@@ -119,6 +208,14 @@ GB28181 里常见是 `sip:设备ID@域ID`（域ID类似 `3402000000`），而不
 `Contact` 是对端后续主动找你时用的地址：
 
 - 如果你在 NAT 后面，`Contact` 填内网 IP 往往不可达，需要 NAT 映射/穿透策略（或由上级平台按你源地址回呼）。
+
+### 5.4 `SipMessage` 的缓冲区与安全性
+
+`SipMessage` 里使用 `sprintf` 写入 `char[128]`：
+
+- 当 `sipId/ip` 字符串过长时会发生缓冲区溢出
+
+学习阶段可以先不改，但至少要知道风险点；后续建议替换成 `snprintf` 并检查返回值。
 
 ---
 
