@@ -61,6 +61,18 @@ class GlobalCtl
         return supDomainInfoList;
     }
 
+    static void get_global_mutex()
+    {
+        pthread_mutex_lock(&globalLock);
+    }
+
+    static void free_global_mutex()
+    {
+        pthread_mutex_unlock(&globalLock);
+    }
+
+    static pthread_mutex_t globalLock;
+
     private:
     //私有构造函数：防止外部通过 new GlobalCtl() 创建实例
     GlobalCtl(void)

@@ -1,5 +1,6 @@
 #include "GlobalCtl.h"
 GlobalCtl::SUPDOMAININFOLIST GlobalCtl::supDomainInfoList;
+pthread_mutex_t GlobalCtl::globalLock=PTHREAD_MUTEX_INITIALIZER;//宏，用于静态初始化一个互斥锁。它相当于给这个锁赋一个默认的初始状态（未锁定、可用）。
 
 GlobalCtl* GlobalCtl::m_pInstance=NULL;
 

@@ -45,12 +45,14 @@ void SipRegister::registerServiceStart()
     {
         m_regTimer->setTimerFun(SipRegister::RegisterProc,(void*)this);
         m_regTimer->start();
-    }
+    } 
 }
 
 void SipRegister::RegisterProc(void* param)
 {
     SipRegister* pthis=(SipRegister*)param;
+    //GlobalCtl::get_global_mutex();
+    AutoMutexLock lock(&GlobalCtl::globalLock);
     GlobalCtl::SUPDOMAININFOLIST::iterator iter=GlobalCtl::instance()->getSupDomainInfoList().begin();
     for(;iter!=GlobalCtl::instance()->getSupDomainInfoList().end();iter++)
     {
