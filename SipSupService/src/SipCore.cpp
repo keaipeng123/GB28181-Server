@@ -2,6 +2,11 @@
 #include "Common.h"
 #include "SipDef.h"
 #include"GlobalCtl.h"
+#include "SipTaskBase.h"
+#include "SipRegister.h"
+#include "ECThread.h"   
+
+using namespace EC;
 
 static int pollingEvent(void* arg)
 {
@@ -28,15 +33,28 @@ pj_bool_t onRxRequest(pjsip_rx_data *rdata)
     {
         return PJ_FALSE;
     }
+    threadParam* param=new threadParam();
     pjsip_msg* msg=rdata->msg_info.msg;
-    LOG(INFO)<<"Received Request Method id:"<<msg->line.req.method.id;
-    LOG(INFO)<<"Received Request Method name:"<<msg->line.req.method.name.ptr;
-    // if(msg->line.req.method.id==PJSIP_REGISTER_METHOD)
-    // {
-    //     param->base=new SipRegister();
-    // }
+    pjsip_rx_data_clone(rdata,0,&param->data);
+    if(msg->line.req.method.id==PJSIP_REGISTER_METHOD)
+    {
+        param->base=new SipRegister();
+    }
+    pthread_t pid;
+    int ret=EC::ECThread::createThread(SipCore::dealTaskThread,param,pid);
+    if(ret!=0)
+    {
+        LOG(ERROR)<<"create task thread error";
+        if(param)
+        {
+            delete param;
+            param=NULL;
+        }
+        return PJ_FALSE;
+    }
     return PJ_SUCCESS;
 }
+
 static pjsip_module recv_mod=
 {
     NULL,NULL,//链表操作，指定模块儿的上下层
@@ -53,6 +71,30 @@ static pjsip_module recv_mod=
     NULL,//发送响应消息之前的回调，检查之用
     NULL,//事务状态变更回调
 };
+
+void* SipCore::dealTaskThread(void* arg)
+{
+    threadParam* param = (threadParam*)arg;
+    if(!param || param->base == NULL)
+    {
+        return NULL;
+    }
+    /*
+    | 线程来源                                 | 是否已注册 | 举例                                                       |
+| ------------------------------------ | ----- | -------------------------------------------------------- |
+| PJSIP 内部创建                           | ✅ 已注册 | `pj_thread_create()`、`pjsip_endpt_handle_events()` 所在的线程 |
+| 外部框架 / 自己写的 `ECThread::createThread` | ❌ 未注册 | `SipCore::dealTaskThread`                                |
+ 是你自己的跨平台线程封装（或第三方库），PJSIP 根本不知道它的存在，因此 PJLIB TLS 尚未初始化，任何 PJSIP API 都会触发：
+Assertion failed: !"Calling PJLIB from unknown/external thread"
+
+    */
+    pj_thread_desc desc;
+    pjcall_thread_register(desc);
+    param->base->run(param->data);
+    delete param;
+    param=NULL;
+}
+
 
 SipCore::SipCore()
 :m_endpt(NULL)
