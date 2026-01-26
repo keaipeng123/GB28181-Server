@@ -1,5 +1,7 @@
 #include "GlobalCtl.h"
-
+GlobalCtl::SUBDOMAININFOLIST GlobalCtl::subDomainInfoList;
+pthread_mutex_t GlobalCtl::globalLock=PTHREAD_MUTEX_INITIALIZER;//宏，用于静态初始化一个互斥锁。它相当于给这个锁赋一个默认的初始状态（未锁定、可用）。
+bool GlobalCtl::gStopPool=false;
 GlobalCtl* GlobalCtl::m_pInstance=NULL;
 
 GlobalCtl* GlobalCtl::instance()
@@ -18,6 +20,28 @@ bool GlobalCtl::init(void *param)
     {
         return false;
     }
+
+    SubDomainInfo info;
+    auto iter =gConfig->ubNodeInfoList.begin();//auto自动类型判断
+    for(;iter != gConfig->ubNodeInfoList.end();++iter)
+    {
+        info.sipId=iter->id;
+        info.addrIp=iter->ip;
+        info.sipPort=iter->port;
+        info.protocal=iter->poto;
+        info.isAuth=iter->auth;
+        // if(iter->auth)
+        // {
+        //     info.isAuth=(iter->auth=1)?true:false;
+        //     info.usr=iter->usr;
+        //     info.pwd=iter->pwd;
+        //     info.realm=iter->realm;
+        // }
+        subDomainInfoList.push_back(info);
+    }
+
+    LOG(INFO)<<"subDomainInfoList.SIZE:"<<subDomainInfoList.size();
+
     if (!gThpool)
     {
         gThpool=new ThreadPool();

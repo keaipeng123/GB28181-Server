@@ -1,7 +1,7 @@
 #include "GlobalCtl.h"
 GlobalCtl::SUPDOMAININFOLIST GlobalCtl::supDomainInfoList;
 pthread_mutex_t GlobalCtl::globalLock=PTHREAD_MUTEX_INITIALIZER;//宏，用于静态初始化一个互斥锁。它相当于给这个锁赋一个默认的初始状态（未锁定、可用）。
-
+bool GlobalCtl::gStopPool=false;
 GlobalCtl* GlobalCtl::m_pInstance=NULL;
 
 GlobalCtl* GlobalCtl::instance()
@@ -30,13 +30,13 @@ bool GlobalCtl::init(void *param)
         info.sipPort=iter->port;
         info.protocal=iter->poto;
         info.expires=iter->expires;
-        if(iter->auth)
-        {
-            info.isAuth=(iter->auth=1)?true:false;
-            info.usr=iter->usr;
-            info.pwd=iter->pwd;
-            info.realm=iter->realm;
-        }
+        // if(iter->auth)
+        // {
+        //     info.isAuth=(iter->auth=1)?true:false;
+        //     info.usr=iter->usr;
+        //     info.pwd=iter->pwd;
+        //     info.realm=iter->realm;
+        // }
         supDomainInfoList.push_back(info);
     }
 

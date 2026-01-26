@@ -1,12 +1,13 @@
 #include "SipCore.h"
 #include "Common.h"
 #include "SipDef.h"
+#include"GlobalCtl.h"
 
 static int pollingEvent(void* arg)
 {
     LOG(INFO)<<"polling event thread start success";
     pjsip_endpoint* ept = (pjsip_endpoint*)arg;
-    while(true)
+    while(!(GlobalCtl::gStopPool))
     {
         pj_time_val timeout = {0,500};
         pj_status_t status = pjsip_endpt_handle_events(ept,&timeout);
@@ -22,6 +23,18 @@ static int pollingEvent(void* arg)
 //rx 接收
 pj_bool_t onRxRequest(pjsip_rx_data *rdata)
 {
+    LOG(INFO)<<"onRxRequest come in";
+    if(NULL==rdata||NULL==rdata->msg_info.msg)
+    {
+        return PJ_FALSE;
+    }
+    pjsip_msg* msg=rdata->msg_info.msg;
+    LOG(INFO)<<"Received Request Method id:"<<msg->line.req.method.id;
+    LOG(INFO)<<"Received Request Method name:"<<msg->line.req.method.name.ptr;
+    // if(msg->line.req.method.id==PJSIP_REGISTER_METHOD)
+    // {
+    //     param->base=new SipRegister();
+    // }
     return PJ_SUCCESS;
 }
 static pjsip_module recv_mod=
@@ -49,6 +62,9 @@ SipCore::SipCore()
 SipCore::~SipCore()
 {
     pjsip_endpt_destroy(m_endpt);
+    pj_caching_pool_destroy(&m_cachingPool);
+    pj_shutdown();
+    GlobalCtl::gStopPool=true;
 }
 
 bool SipCore::InitSip(int sipPort)
@@ -76,12 +92,12 @@ bool SipCore::InitSip(int sipPort)
         }
         //缓存池,pjsip中的内存均是这个缓存池分配的，所以需要将该缓存池储存起来，不能销毁,
         //此处定义了一个栈对象，当函数结束这个对象也就释放了；cachingPool需要和sipCore对象的生命周期一致，所以将其放在类的成员中
-        pj_caching_pool cachingPool;
-        pj_caching_pool_init(&cachingPool,NULL,SIP_STACK_SIZE);
+        //pj_caching_pool cachingPool;
+        pj_caching_pool_init(&m_cachingPool,NULL,SIP_STACK_SIZE);
 
         //【目的】创建并返回 SIP 端点对象
         //【详解】端点是整个 SIP 栈的核心句柄，后续所有模块（事务层、UA 层、传输层、定时器、消息调度）都要挂到它上面。
-        status=pjsip_endpt_create(&cachingPool.factory,NULL,&m_endpt);
+        status=pjsip_endpt_create(&m_cachingPool.factory,NULL,&m_endpt);
         if(PJ_SUCCESS!=status)
         {
             LOG(ERROR)<<"create endpt faild,code:"<<status;

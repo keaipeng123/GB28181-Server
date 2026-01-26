@@ -101,10 +101,9 @@ int SipLocalConfig::ReadConf()
         info.port=m_conf.readInt(port);
         info.poto=m_conf.readInt(proto);
         info.expires=m_conf.readInt(expires);
-        info.auth=m_conf.readInt(auth);
         upNodeInfoList.push_back(info);
         LOG(INFO)<<"supNodeId:"<<info.id<<"supNodeIp:"<<info.ip<<",supNodePort:"<<info.port<<",supNodePoto:"<<info.poto\
-        <<",subNodeExpires:"<<info.expires<<",supNodeAuth:"<<info.auth;
+        <<",subNodeExpires:"<<info.expires;
     }
 
     LOG(INFO)<<"upNodeInfoList.SIZE:"<<upNodeInfoList.size();

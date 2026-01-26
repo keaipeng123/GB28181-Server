@@ -17,7 +17,10 @@ class SipCore
 
     pj_status_t init_transport_layer(int sipPort);
 
+    pjsip_endpoint* GetEndPoint(){return m_endpt;}
+
     private:
     pjsip_endpoint* m_endpt;
+    pj_caching_pool m_cachingPool;
 };
 #endif

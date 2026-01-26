@@ -25,10 +25,6 @@ class SipLocalConfig
         int port;
         int poto;
         int expires;
-        string usr;
-        string pwd;
-        int auth; 
-        string realm;
     };
     list<SupNodeInfo> upNodeInfoList;
 

@@ -73,6 +73,8 @@ class GlobalCtl
 
     static pthread_mutex_t globalLock;
 
+    static bool gStopPool;
+
     private:
     //私有构造函数：防止外部通过 new GlobalCtl() 创建实例
     GlobalCtl(void)

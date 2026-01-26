@@ -2,6 +2,7 @@
 #define _SIPLOCALCONFIG_H
 #include"ConfReader.h"
 #include "Common.h"
+#include <list>
 
 class SipLocalConfig
 {
@@ -16,10 +17,21 @@ class SipLocalConfig
     inline string sipIp(){return m_sipIp;}
     inline int sipPort(){return m_sipPort;}
 
+    struct SubNodeInfo
+    {
+        string id;
+        string ip;
+        int port;
+        int poto;
+        int auth; 
+    };
+    list<SubNodeInfo> ubNodeInfoList;
+
     private:
     ConfReader m_conf;
     string m_localIp;
     int m_localPort;
+    string m_sipId;
     string m_sipIp;
     int m_sipPort;
     string m_subNodeIp;

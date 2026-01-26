@@ -8,10 +8,12 @@
 static const string keyLocalIp="local_ip";
 static const string keyLocalPort="local_port";
 
+static const string keySipId="sip_id";
 static const string keySipIp="sip_ip";
 static const string keySipPort="sip_port";
 
 static const string keySubNodeNum="subnode_num";
+static const string keySubNodeId="sip_subnode_id";
 static const string keySubNodeIp="sip_subnode_ip";
 static const string keySubNodePort="sip_subnode_port";
 static const string keySubNodePoto="sip_subnode_poto";
@@ -22,6 +24,7 @@ SipLocalConfig::SipLocalConfig()
 {
     m_localIp="";
     m_localPort=0;
+    m_sipId="";
     m_sipIp="";
     m_sipPort=0;
     m_subNodeIp="";
@@ -55,6 +58,13 @@ int SipLocalConfig::ReadConf()
         return ret;
     }
     m_conf.setSection(SIP_SECTION);
+    m_sipId=m_conf.readStr(keySipId);
+    if (m_sipId.empty())
+    {
+        ret=-1;
+        LOG(ERROR)<<"sipId is woring";
+        return ret;
+    }
     m_sipIp=m_conf.readStr(keySipIp);
     if (m_sipIp.empty())
     {
@@ -70,25 +80,32 @@ int SipLocalConfig::ReadConf()
         return ret;
     }
    
-    LOG(INFO)<<"localip:"<<m_localIp<<",localPort:"<<m_localPort<<",sipIp:"<<m_sipIp\
+    LOG(INFO)<<"localip:"<<m_localIp<<",localPort:"<<m_localPort<<",sipId:"<<m_sipId<<",sipIp:"<<m_sipIp\
     <<",sipPort:"<<m_sipPort;
 
     int num=m_conf.readInt(keySubNodeNum);
+    SubNodeInfo info;
     for(int i=1;i<num+1;++i)
     {
+        string id=keySubNodeId+to_string(i);
         string ip=keySubNodeIp+to_string(i);
         string port=keySubNodePort+to_string(i);
         string proto=keySubNodePoto+to_string(i);
         string auth=keySubNodeAuth+to_string(i);
         
-        m_subNodeIp=m_conf.readStr(ip);
-        m_subNodePort=m_conf.readInt(port);
-        m_subNodePoto=m_conf.readInt(proto);
-        m_subNodeAuth=m_conf.readInt(auth);
+        info.id=m_conf.readStr(id);
+        info.ip=m_conf.readStr(ip);
+        info.port=m_conf.readInt(port);
+        info.poto=m_conf.readInt(proto);
+        info.auth=m_conf.readInt(auth);
 
-        LOG(INFO)<<"m_subNodeIp:"<<m_subNodeIp<<",m_subNodePort:"<<m_subNodePort<<",m_subNodePoto:"<<m_subNodePoto\
-        <<",m_subNodeAuth:"<<m_subNodeAuth;
+        ubNodeInfoList.push_back(info);
+
+        LOG(INFO)<<"m_subNodeid:"<<info.id<<",m_subNodeIp:"<<info.ip<<",m_subNodePort:"<<info.port<<",m_subNodePoto:"<<info.poto\
+        <<",m_subNodeAuth:"<<info.auth;
     }
+
+    LOG(INFO)<<"ubNodeInfoList.SIZE:"<<ubNodeInfoList.size();
 
     return ret;
 }

@@ -1,12 +1,13 @@
 #include "SipCore.h"
 #include "Common.h"
 #include "SipDef.h"
+#include"GlobalCtl.h"
 
 static int pollingEvent(void* arg)
 {
     LOG(INFO)<<"polling event thread start success";
     pjsip_endpoint* ept = (pjsip_endpoint*)arg;
-    while(true)
+    while(!(GlobalCtl::gStopPool))
     {
         pj_time_val timeout = {0,500};
         pj_status_t status = pjsip_endpt_handle_events(ept,&timeout);
@@ -49,6 +50,9 @@ SipCore::SipCore()
 SipCore::~SipCore()
 {
     pjsip_endpt_destroy(m_endpt);
+    pj_caching_pool_destroy(&m_cachingPool);
+    pj_shutdown();
+    GlobalCtl::gStopPool=true;
 }
 
 bool SipCore::InitSip(int sipPort)
