@@ -43,6 +43,12 @@ class GlobalCtl
             pwd="";
             realm="";
         }
+        
+        bool operator==(string id)
+        {
+            return (this->sipId==id);
+        }
+
         string sipId;
         string addrIp;
         int sipPort;
@@ -74,6 +80,10 @@ class GlobalCtl
     static pthread_mutex_t globalLock;
 
     static bool gStopPool;
+
+    public:
+    static bool checkIsExist(string id);
+    static void setExpires(string id,int expires);
 
     private:
     //私有构造函数：防止外部通过 new GlobalCtl() 创建实例

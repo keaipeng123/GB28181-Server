@@ -3,7 +3,7 @@
 #include"ConfReader.h"
 #include "Common.h"
 #include <list>
-
+#include<algorithm>
 class SipLocalConfig
 {
     public:
