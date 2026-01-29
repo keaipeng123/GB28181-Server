@@ -4,6 +4,8 @@
 >
 > - `SipSubService/include/SipCore.h`
 > - `SipSubService/src/SipCore.cpp`
+> - `SipSupService/include/SipCore.h`
+> - `SipSupService/src/SipCore.cpp`
 > - `SipSubService/include/SipDef.h`
 >
 > 目标：
@@ -295,6 +297,113 @@ if (msg && msg->type == PJSIP_REQUEST_MSG) {
 在 PJSIP 里这通常走 stateless response：从 `rdata` 创建 `tdata`，然后 send。
 
 （提示：具体 API 名在不同版本/封装里会略有差别，但核心思路是：create_response → send_response。）
+
+---
+
+### 6.5 上下级差异：SUB vs SUP 的 `onRxRequest()` 与“任务分发”
+
+虽然上下级两侧都注册了同名的 `recv_mod`（模块名 `mod-recv`），但 **接收回调实现差异很大**：
+
+#### 6.5.1 下级（SipSubService）侧：当前是“空实现/不处理”
+
+对应 [SipSubService/src/SipCore.cpp](../../SipSubService/src/SipCore.cpp)：
+
+- `onRxRequest()` 直接 `return PJ_SUCCESS;`
+- 由于 `PJ_SUCCESS` 通常是 0，它在 `pj_bool_t` 上等价于 `PJ_FALSE`
+- 实际含义：**该模块不处理请求，让请求继续向后传递给其它模块**
+
+这通常意味着：SUB 侧更多是“主动发起请求（例如 REGISTER client）”，而不是在 `onRxRequest()` 里做业务。
+
+#### 6.5.2 上级（SipSupService）侧：按方法创建任务类 + 开线程处理
+
+对应 [SipSupService/src/SipCore.cpp](../../SipSupService/src/SipCore.cpp)：
+
+SUP 侧 `onRxRequest()` 做了一个最小的“路由器/分发器”：
+
+1) 判空：`rdata` / `rdata->msg_info.msg`
+2) 克隆消息：`pjsip_rx_data_clone(rdata, 0, &param->data)`
+  - 目的：把 `rdata` 的内容复制一份，交给业务线程异步处理
+3) 按方法选择业务：
+  - `if (msg->line.req.method.id == PJSIP_REGISTER_METHOD) param->base = new SipRegister();`
+4) 启线程处理：`ECThread::createThread(SipCore::dealTaskThread, param, pid)`
+  - 每个请求一个线程（学习阶段简单直接，但高并发下会有开销，后续可替换成线程池/队列）
+
+这里还有一个非常关键的工程点：
+
+- 既然你已经“接管”了该请求，并会在业务线程里回复响应，一般更合理的返回值是 `PJ_TRUE`（表示本模块已处理/已接管，避免其它模块重复处理同一请求）。
+- 目前代码返回的是 `PJ_SUCCESS`（通常为 0），从语义上更像 `PJ_FALSE`。
+
+是否一定要改成 `PJ_TRUE` 取决于你整体模块链路是否还有其它模块会处理同一个 REGISTER；但**写笔记时建议把这个语义点记牢**。
+
+---
+
+### 6.6 `pjsip_rx_data_clone()` / `pjsip_rx_data_free_cloned()`：异步处理的“必要动作”
+
+SUP 侧之所以要 clone，是因为：
+
+- `onRxRequest()` 运行在 PJSIP 的接收线程/事件线程上下文里
+- `rdata` 的生命周期通常由栈内部管理，回调返回后不保证继续有效
+
+所以正确做法是：
+
+- 回调里 clone 一份 `pjsip_rx_data`
+- 业务线程处理完后释放 clone
+
+在 SUP 侧 [SipSupService/include/SipCore.h](../../SipSupService/include/SipCore.h) 里用 `threadParam` 的析构函数统一做了收尾：
+
+- `delete base;`（释放业务任务对象）
+- `pjsip_rx_data_free_cloned(data);`（释放 clone 的 rdata）
+
+这也是为什么业务线程末尾只需要 `delete param;`。
+
+### 6.6.1 `_threadParam`/`threadParam` 的作用：跨线程的“任务上下文 + 统一回收”
+
+SUP 侧 [SipSupService/include/SipCore.h](../../SipSupService/include/SipCore.h) 定义了：
+
+- `_threadParam`：结构体本体
+- `threadParam`：`typedef` 的别名
+
+它的定位可以理解为：**把一次收到的 SIP 请求，打包成一个“可在线程间传递”的任务对象**。
+
+这个任务对象里装了两类关键资源：
+
+1) `SipTaskBase* base`：
+  - 指向“具体业务处理类”（例如 REGISTER 就是 `new SipRegister()`）
+  - 通过多态 `base->run(...)` 执行业务
+
+2) `pjsip_rx_data* data`：
+  - `pjsip_rx_data_clone()` 得到的克隆报文
+  - 用于业务线程里安全地解析/回复（避免使用回调返回后可能失效的原始 `rdata`）
+
+为什么要建立这个结构体？主要解决 3 个工程问题：
+
+- **跨线程传参**：`onRxRequest()` 里创建任务、clone 报文，然后把这一包参数丢给 `ECThread::createThread()`；线程入口只接收一个 `void*`，因此需要一个“打包结构”。
+- **明确资源所有权**：谁负责 `delete base`、谁负责 `pjsip_rx_data_free_cloned`？都放进 `threadParam` 的析构函数里统一处理，规则清晰。
+- **异常/失败路径不泄漏**：例如线程创建失败时，代码会 `delete param;`，会自动触发析构把已创建的 `base` 与已 clone 的 `data` 一并释放。
+
+一句话总结：`threadParam` 就是这套“收到请求 → 分发到业务线程”的承载体，它把 **业务对象 + 报文副本** 绑在一起，并用 RAII（析构回收）保证任何路径下都不泄漏。
+
+---
+
+### 6.7 外部线程使用 PJSIP：必须做 PJLIB 线程注册
+
+SUP 侧的业务线程是用 `ECThread::createThread()` 创建的（不是 PJLIB/PJSIP 创建的线程）。
+
+PJLIB 要求：**外部线程在调用任何 PJLIB/PJSIP API 之前必须注册**，否则可能触发断言：
+
+`Assertion failed: !"Calling PJLIB from unknown/external thread"`
+
+工程里通过 `pjcall_thread_register()` 封装了这一步：
+
+- 定义在 [SipSupService/include/GlobalCtl.h](../../SipSupService/include/GlobalCtl.h)
+- 内部调用 `pj_thread_is_registered()` / `pj_thread_register()`
+
+因此在 [SipSupService/src/SipCore.cpp](../../SipSupService/src/SipCore.cpp) 的 `dealTaskThread()` 开头会先：
+
+- `pj_thread_desc desc;`
+- `pjcall_thread_register(desc);`
+
+另外你还能在 [SipSupService/src/TaskTimer.cpp](../../SipSupService/src/TaskTimer.cpp) 里看到同样的注册动作，说明：**只要线程不是 PJLIB 创建的，但又要调用 PJLIB/PJSIP，就应该先注册**。
 
 ---
 

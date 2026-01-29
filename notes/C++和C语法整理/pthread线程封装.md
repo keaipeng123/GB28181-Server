@@ -198,6 +198,17 @@ pthread_cancel(id);
 
 ```cpp
 prctl(PR_SET_NAME, "worker", 0, 0, 0);
+
+---
+
+## 10. 补充：临界区建议用“智能锁（RAII）”
+
+线程封装之外，项目里大量并发共享数据的地方还会用到互斥锁。
+
+建议的写法是：**不要手写 `pthread_mutex_lock/unlock` 配对**，而是统一用 RAII 智能锁（构造加锁、析构解锁），避免中途 `return/throw` 导致漏解锁。
+
+- 相关笔记：见 `C++和C语法整理/智能锁_RAII.md`
+
 ```
 
 （线程名在调试/`top -H`/`ps -L`/日志定位时很有用。）

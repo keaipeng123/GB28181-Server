@@ -4,6 +4,8 @@
 >
 > - [SipSubService/include/SipRegister.h](../../SipSubService/include/SipRegister.h)
 > - [SipSubService/src/SipRegister.cpp](../../SipSubService/src/SipRegister.cpp)
+> - [SipSupService/include/SipRegister.h](../../SipSupService/include/SipRegister.h)
+> - [SipSupService/src/SipRegister.cpp](../../SipSupService/src/SipRegister.cpp)
 > - [SipSubService/include/SipMessage.h](../../SipSubService/include/SipMessage.h)
 > - [SipSubService/src/SipMessage.cpp](../../SipSubService/src/SipMessage.cpp)
 >
@@ -13,15 +15,26 @@
 >
 > 目标：
 >
-> 1) 看懂本工程如何用 PJSIP 发起 REGISTER。
-> 2) 明确 `From/To/Request-URI/Contact/Expires` 在 GB28181 注册里的含义。
-> 3) 知道回调如何拿到注册结果，以及常见坑。
+> 1) 看懂下级（SUB）如何用 PJSIP 发起 REGISTER（客户端）。
+> 2) 看懂上级（SUP）如何处理收到的 REGISTER 并回复响应（服务端）。
+> 3) 明确 `From/To/Request-URI/Contact/Expires` 在 GB28181 注册里的含义。
+> 4) 知道回调/响应链路、线程与并发风险，以及常见坑。
 
 ---
 
 ## 1. `SipRegister` 在工程里的定位
 
 `SipRegister` 负责“向上级平台（SUP）注册”。它的行为很直接：
+
+本工程里 REGISTER 相关代码分两侧：
+
+- **SipSubService（下级/客户端）**：主动向上级发 REGISTER，并在回调里根据响应码更新 `registered`。
+- **SipSupService（上级/服务端）**：接收来自下级的 REGISTER 请求，校验、记录 `Expires`，并回 200/403 等响应。
+
+两边的名字都叫 `SipRegister`，但职责不同：
+
+- SUB 侧：更像“注册发起器（client regc）”。
+- SUP 侧：是一个业务处理任务类，继承自 [SipTaskBase_业务任务基类.md](SipTaskBase_业务任务基类.md)（通过 `run()` 处理收到的 `pjsip_rx_data*`）。
 
 ### 1.1 定时轮询式注册（当前代码的真实行为）
 
@@ -42,6 +55,18 @@
 > 但要注意“并发与重复发送”的工程风险，下面会单独讲。
 
 > 这里的 `GlobalCtl::SupDomainInfo` 可以理解为“一个上级平台的注册目标”，里面通常会有：对端 `addrIp/sipPort`、SIP ID、transport、expires、以及 `registered` 状态。
+
+### 1.2 上下级对照：REGISTER 的“请求-响应”闭环
+
+把 SUB 与 SUP 侧放在一起看，REGISTER 的闭环就是：
+
+1) SUB：定时触发 → 遍历上级列表 → 对未注册的 `SupDomainInfo` 发送 REGISTER
+2) 网络：REGISTER 报文到达 SUP
+3) SUP：解析 `From`/`Expires` → 判断是否允许注册 → 回 SIP 响应（200/403）
+4) 网络：响应到达 SUB
+5) SUB：`client_cb()` 回调拿到响应码 → 200 则置 `registered=true`
+
+只要事件循环线程（`pjsip_endpt_handle_events()`）在跑，上述回调/响应就能推进。
 
 ---
 
@@ -216,6 +241,91 @@ GB28181 里常见是 `sip:设备ID@域ID`（域ID类似 `3402000000`），而不
 - 当 `sipId/ip` 字符串过长时会发生缓冲区溢出
 
 学习阶段可以先不改，但至少要知道风险点；后续建议替换成 `snprintf` 并检查返回值。
+
+---
+
+## 6. 上级（SUP）侧：如何处理收到的 REGISTER（服务端视角）
+
+对应代码：
+
+- [SipSupService/include/SipRegister.h](../../SipSupService/include/SipRegister.h)
+- [SipSupService/src/SipRegister.cpp](../../SipSupService/src/SipRegister.cpp)
+
+### 6.1 继承关系：`SipRegister : public SipTaskBase`
+
+SUP 侧 `SipRegister` 继承自 `SipTaskBase`，因此它通过统一入口：
+
+- `pj_status_t run(pjsip_rx_data* rdata)`
+
+来处理收到的 SIP 请求。
+
+代码里 `run()` 只是把处理转发到：
+
+- `RegisterRequestMessage(rdata)` → `dealWithRegister(rdata)`
+
+这符合“一个业务类只关心自己的消息处理”的任务模型。
+
+### 6.2 业务处理：`dealWithRegister()` 做了什么
+
+在 [SipSupService/src/SipRegister.cpp](../../SipSupService/src/SipRegister.cpp) 里，`dealWithRegister()` 的核心步骤是：
+
+1) 取出消息：`pjsip_msg* msg = rdata->msg_info.msg;`
+2) 从 `From` 中解析出下级 ID：`string fromId = parseFromId(msg);`
+3) 白名单/存在性校验：`GlobalCtl::checkIsExist(fromId)`
+    - 不存在：返回 `SIP_FORBIDDEN`（403）
+    - 存在：继续解析 `Expires` 并写入 `GlobalCtl::setExpires(fromId, expiresValue)`
+4) 构造响应：`pjsip_endpt_create_response(..., status_code, ..., &txdata)`
+5) 添加 Date 头：`pjsip_date_hdr_create` + `pjsip_msg_add_hdr`
+6) 获取响应地址并发送：`pjsip_get_response_addr` → `pjsip_endpt_send_response`
+
+从工程效果看：SUP 侧现在实现的是一个“最小可用”的 REGISTER 处理器：
+
+- 允许的设备返回 200
+- 不允许的设备返回 403
+- 记录 Expires（但注册状态/续期策略有一部分被注释掉，后续可再工程化）
+
+### 6.3 鉴权（401/407 Digest）：目前是注释的学习代码
+
+你在 SUP 侧代码里能看到一大段 `dealWithAuthorRegister()` 与 `auth_cred_callback()` 的尝试（大部分注释）。
+
+当前实际走的是：
+
+- `RegisterRequestMessage()` 直接进入 `dealWithRegister()`
+
+这意味着：现在的“是否允许注册”主要由 `GlobalCtl::checkIsExist(fromId)` 决定，而不是 Digest 鉴权。
+
+---
+
+## 7. SUB vs SUP：两个 `SipRegister` 的关键差异（记住这张对照表）
+
+- SUB（下级）：
+   - 用 `pjsip_regc_*`（REGISTER client）
+   - 主动发 REGISTER，靠 `client_cb()` 异步拿响应
+   - 定时线程遍历上级列表，并用 `AutoMutexLock` 保护全局列表
+
+- SUP（上级）：
+   - 继承 `SipTaskBase`，通过 `run()` 处理收到的请求
+   - 主动构造并发送响应（`create_response` / `send_response`）
+   - 校验逻辑目前偏“白名单/存在性”，鉴权逻辑仍在演进
+
+---
+
+## 8. 工程化补充：两侧都容易踩的点
+
+### 8.1 SUB 侧：`pjsip_regc` 的生命周期
+
+SUB 侧发送成功后当前没有销毁 `regc`，长期运行可能形成资源累积；如果要做“可续注册”，更合理的是把 `regc` 保存为成员并复用/定时 refresh。
+
+### 8.2 SUP 侧：并发与数据一致性
+
+SUP 侧会更新 `GlobalCtl::setExpires(fromId, expiresValue)`；如果这个全局结构也被其它线程读取/写入，建议统一加锁（你在 SUB 侧已经有 `AutoMutexLock lock(&GlobalCtl::globalLock)` 的用法）。
+
+### 8.3 `parseFromId()` 的脆弱性
+
+两侧都依赖 `SipTaskBase::parseFromId()` 的固定位置截取（`substr(11, 20)`）。
+
+- 报文格式一变就可能截错
+- 更稳妥方式是从 `pjsip_from_hdr` 的 URI 结构中解析 user 部分（后续再做重构）
 
 ---
 
